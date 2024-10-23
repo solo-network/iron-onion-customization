@@ -8,9 +8,9 @@ import socket
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Elasticsearch credentials and query details
-elasticsearch_url = "https://localhost:9200/.ds-logs-*/_search"
-username = "elastic-solo"
-password = "Uo2fUHC1YKQ05kFe13vv"
+elasticsearch_url = os.environt['ELASTIC_URL']
+username = os.environment['ELASTIC_USER'] 
+password = os.environment['ELASTIC_PASSWORD']
 
 #Event ID
 event_id_file_path= "/tmp/event_id.txt"
