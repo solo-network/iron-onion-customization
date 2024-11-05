@@ -1,9 +1,9 @@
 import logging
 from dataclasses import dataclass, field
-import argparse
 import json
 import requests
 import os
+import uuid
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class IronCustomOnion:
             print("Ação inválida. Escolha 'folder_rules' ou 'one_rule'.")
 
     def folder_rules(self):
-        rules_path = os.path.join(os.path.dirname(__file__), 'rules')
+        rules_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'rules')
 
         if not os.path.exists(rules_path):
             print(f"Pasta 'rules' não encontrada em {rules_path}.")
@@ -45,7 +45,8 @@ class IronCustomOnion:
                 self._process_rule(file_path)
 
     def one_rule(self, file_name):
-        file_path = os.path.join(os.path.dirname(__file__), 'rules', file_name)
+        file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'rules', file_name)
+        print(file_path)
 
         if os.path.isfile(file_path):
             print(f"Processando o arquivo único: {file_name}")
@@ -83,31 +84,12 @@ class IronCustomOnion:
             json=query_json,
             verify=False
         )
-        return response.text
+        return response.json
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="Este script executa regras para interagir com o Elasticsearch do Security Onion da Solo Iron.",
-        epilog="Exemplo de uso: python custom.py folder_rules ou python custom.py one_rule regrax.json"
-    )
-    subparsers = parser.add_subparsers(dest='action', required=True)
-
-    parser_folder_rules = subparsers.add_parser(
-        "folder_rules",
-        help="Executa todas as regras encontradas na pasta 'rules'."
-    )
-
-    parser_one_rule = subparsers.add_parser(
-        "one_rule",
-        help="Executa uma única regra especificada pelo nome do arquivo JSON."
-    )
-    parser_one_rule.add_argument(
-        "file_name",
-        help="Nome do arquivo JSON que contém a regra a ser executada (ex: regrax.json)."
-    )
-
-    args = parser.parse_args()
-    IronCustomOnion(action=args.action, file_name=getattr(args, 'file_name', None))
+    def set_iron_id(self):
+        iron_id = uuid.uuid4()
+        print(iron_id)
 
 if __name__ == "__main__":
-    main()
+    obj = IronCustomOnion('one_rule')
+    obj.set_iron_id()

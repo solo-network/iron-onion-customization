@@ -8,16 +8,15 @@ import socket
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Elasticsearch credentials and query details
-elasticsearch_url = os.environt['ELASTIC_URL']
-username = os.environment['ELASTIC_USER'] 
-password = os.environment['ELASTIC_PASSWORD']
+elasticsearch_url = "https://localhost:9200/.ds-logs-*/_search"
+username = "elastic-solo"
+password = "Uo2fUHC1YKQ05kFe13vv"
 
 #Event ID
 event_id_file_path= "/tmp/event_id.txt"
 
 # Directory path containing query files
 query_directory_path = "/opt/queries/fabricantes/checkpoint"
-
 nc_host = "10.0.1.5"  # Change to your desired host
 nc_port = 7070          # Change to your desired port
 
@@ -194,4 +193,3 @@ for query_file in query_files:
         logging.error(f"Error running curl command for file {query_file}: {e}")
     except json.JSONDecodeError as e:
         logging.error(f"Error decoding JSON response for file {query_file}: {e}")
-
